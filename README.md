@@ -2,7 +2,18 @@ networkdesign
 ====
 [![Haskell CI](https://github.com/44534/networkdesign/actions/workflows/haskell.yml/badge.svg)](https://github.com/44534/networkdesign/actions/workflows/haskell.yml)
 
-Enumeration of instances to find lower bounds on the Price of Stability in broadcast games using an SMT solver.
+Enumeration of instances to find lower bounds on the Price of Stability in uniform broadcast games using an SMT solver.
+
+Lower bounds are found by bounding:
+```
+\max_{OPT tree in K_n} \max_{NE tree in K_n} 
+  \max{r \in R| \exist scaling factors g: 
+        C^g(NE)/C^g(OPT) > r, 
+        OPT is social optimum, 
+        NE is one of the best equilibria
+      }
+```
+The conditions on the scaling factors are checked with an SMT solver.
 
 Features
 ----
@@ -11,6 +22,11 @@ Features
 * Find all instances of a given class achieving a given value of the PoS
 * Find lower bounds on the PoS for a given class by evolutionary search
 
+Instances can be restricted to
+* all pairs of trees in the complete graph
+* all pairs of trees in the complete graph, but considering only the union of the two trees
+* NE tree fixed to be a star
+* OPT tree fixed to be a path
 
 Installation
 ---
@@ -149,10 +165,10 @@ opt: 1 [ 2 , 3 , 4 ]
 (1.48485115,(1 [ 2 [ 3 [ 4 ] ] ],(1 [ 2 , 3 , 4 ],[ ({1,2},0.45662925) , ({1,3},0.51373264) , ({1,4},0.51455520) , ({2,3},0.28545100) , ({2,4},0.36236744) , ({3,4},0.25791974) ])))
 ```
 The instances are grouped by the optimum tree.
-For each optimum tree a new line is printed, if there is an ne tree with a higher lower bound on the PoS.
+For each optimum tree, a new line is printed, if there is an ne tree with a higher lower bound on the PoS.
 These lines are of the form
 `(lower bound, (ne tree, scaling factors on the edges ))`.
-After the complete enumeration the highest lower bound is printed after `--------` in the format `(lower bound, (opt tree, (ne tree, scaling factors)))`.
+After the complete enumeration, the highest lower bound is printed after `--------` in the format `(lower bound, (opt tree, (ne tree, scaling factors)))`.
 Trees are given recursively by `node label [list of subtrees]` for example:
 ```
 1 [ 2 [ 3 [ 4 ] ] ] and 1 [ 2 , 3 , 4 ] correspond to
