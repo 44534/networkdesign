@@ -96,17 +96,16 @@ progQuasiBipartite = Prog $ \ l pos norm opt ne es sts r -> do
       steinertrees = allSteinerTreesAt (root opt) es (init optes)
   xs <- M.fromList <$> mapM ( \e -> (e,) <$> declareVar real ) es
 
-  -- opt ist opt
+  -- opt is opt
   forM_ steinertrees $ \t -> do
       assert (soccost l xs (toTree (root opt) t) .>=. soccost l xs opt)
 
-  -- ne ist ne
+  -- ne is ne
   isNE l xs ne es
 
 
   when pos (
-  -- wenn anderer spannbaum ne, dann teurer
-  -- forM_ (allSpanningTreesAt (root opt) es (init optes)) $ \st -> do
+  -- if other spanning tree (st) is equilibrium, then the social cost has to be at least as large
     forM_ sts $ \st -> do
       if st /= toChildMap ne
         then assert $ and' (map
@@ -125,9 +124,6 @@ progQuasiBipartite = Prog $ \ l pos norm opt ne es sts r -> do
                       ((vul, vur), (uvl, uvr)) <- cnstrQuasiBip l xs stt e (S.fromList [u,u'])
                       (vul .>=. vur) .&. (uvl .>=. uvr)
                     (False, False) -> error "not quasibip"
-               -- do
-               --  ((vul, vur), (uvl, uvr)) <- cnstr xs (toTree (root opt) st) e
-               --  (vul .>=. vur) .&. (uvl .>=. uvr)
               )
               (es L.\\ edges st)
               )
@@ -137,7 +133,7 @@ progQuasiBipartite = Prog $ \ l pos norm opt ne es sts r -> do
       )
 
   -- c(ne) >= r c(opt)
-  assert $ soccost l xs ne .>=. creal r .*. soccost l xs opt
+  assert $ soccost l xs ne .>. creal r .*. soccost l xs opt
 
   when norm
     (assert $ soccost l xs opt .==. creal 1)

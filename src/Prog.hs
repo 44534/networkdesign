@@ -271,9 +271,10 @@ runWithFixedOpt params solver opt fes fsts step = do
 runParallel program params solvers opt nes fes fsts r step = do
   lock <- newMVar ()
   let atomPut s = withMVar lock $ \_ -> hPutStrLn stderr s
-  pids <- forM nes $ \ne ->
-     async $ do
-       atomPut $ pprint (opt, ne) ++ " " ++ pprint r ++ " start"
+  pids <- forM nes $ \ne -> do
+     when (debugswitch params) $
+        atomPut $ pprint (opt, ne) ++ " " ++ pprint r ++ " start"
+     async $
        runOne program params solvers opt ne (fes opt ne) (fsts opt ne) step r
   rs <- forM pids wait
   return $ zip nes rs

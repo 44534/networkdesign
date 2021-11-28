@@ -180,7 +180,7 @@ argOpts = ArgOpts
             <> help "the number of parallel computations to be done, waiting for all to finish. This has to be combined with the \"+RTS\" option")
       <*> (unR <$> option auto (long "start"
                     <> metavar "VALUE"
-                    <> help "A lower bound on the PoS. Resulting instances will have PoS >= VALUE."
+                    <> help "A lower bound on the PoS. Resulting instances will have PoS > VALUE."
                     )
           )
       <*> (unR <$> option auto (long "step" <> short 's'
@@ -282,7 +282,9 @@ toFunc (Power a) = \k -> toRational $ (fromIntegral k :: Double) ** (fromRationa
 
 main :: IO ()
 main = do
-  args <- execParser $ info (argOpts <**> helper) fullDesc
+  args <- execParser $ 
+                info (helper <*> argOpts) 
+                     (fullDesc <> progDesc "networkdesign" <> header "Enumeration of instances to find lower bounds on the Price of Stability in broadcast games using an SMT solver.")
   let l = toFunc $ share args
   case modus args of
     EnumFind et t b c start s cpl pt norm inf debug showsys -> do
