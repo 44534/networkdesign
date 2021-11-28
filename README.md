@@ -1,6 +1,6 @@
 networkdesign
 ====
-[![Build Status](https://travis-ci.org/44534/networkdesign.svg?branch=master)](https://travis-ci.org/44534/networkdesign)
+[![Build Status](https://app.travis-ci.com/44534/networkdesign.svg?token=x2S1pLSLXWsyktpey5Ua&branch=master)](https://travis-ci.org/44534/networkdesign)
 
 Enumeration of instances to find lower bounds on the Price of Stability in broadcast games using an SMT solver.
 
