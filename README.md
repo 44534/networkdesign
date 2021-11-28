@@ -1,6 +1,6 @@
 networkdesign
 ====
-[![Build Status](https://app.travis-ci.com/44534/networkdesign.svg?token=x2S1pLSLXWsyktpey5Ua&branch=master)](https://travis-ci.org/44534/networkdesign)
+[![Haskell CI](https://github.com/44534/networkdesign/actions/workflows/haskell.yml/badge.svg)](https://github.com/44534/networkdesign/actions/workflows/haskell.yml)
 
 Enumeration of instances to find lower bounds on the Price of Stability in broadcast games using an SMT solver.
 
@@ -14,7 +14,8 @@ Features
 
 Installation
 ---
-
+This project uses [stack](https://docs.haskellstack.org/en/stable/README/).
+Install package with:
 ```
 stack install
 ```
